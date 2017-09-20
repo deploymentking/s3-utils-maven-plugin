@@ -35,11 +35,14 @@ public class S3MultipartUpload extends AbstractMojo {
   @Parameter()
   private String profile;
 
+  @Parameter(required = false, defaultValue = "20")
+  private int chunkCount;
+
   private static final String accessKey = System.getenv("AWS_ACCESS_KEY_ID");
   private static final String secretKey = System.getenv("AWS_SECRET_ACCESS_KEY");
 
   private static final Logger logger = LoggerFactory.getLogger(S3MultipartUpload.class);
-  private static final long FILE_CHUNK_SIZE = 20;
+  private static final long MIN_FILE_SIZE = 5242880;
 
   private static AmazonS3 s3Client;
   private static File file;
@@ -70,7 +73,7 @@ public class S3MultipartUpload extends AbstractMojo {
     // This may need to change in the future if the size of the file grows so large that the individual chunks become
     // too big. In that case, just determine a decent part size in bytes. Don't go too small though otherwise too many
     // http connections are established and some time out.
-    long partSize = file.length() / FILE_CHUNK_SIZE;
+    long partSize = file.length() / this.chunkCount;
 
     try {
       // Step 2: Upload parts.
@@ -127,19 +130,34 @@ public class S3MultipartUpload extends AbstractMojo {
   private void checkArguments() throws MojoExecutionException {
     String error;
 
-    logger.info(String.format("Using the following arguments: bucket = %s, source = %s, key = %s, profile = %s, accessKey = %s, secretKey = %s",
+    logger.info(String.format("Using the following arguments: bucket = %s, source = %s, key = %s, profile = %s, accessKey = %s, secretKey = ***",
         this.bucket,
         this.source,
         this.key,
         this.profile,
-        this.accessKey,
-        this.secretKey));
+        this.accessKey));
 
     if (!file.exists()) {
       error = String.format("File not found: %s", file.getAbsolutePath());
       logger.error(error);
       throw new MojoExecutionException(error);
     }
+
+    if (file.length() < MIN_FILE_SIZE) {
+      error = String.format("File size (%s bytes) is too small for multipart uploads. File needs to be greater than %s bytes", file.length(), MIN_FILE_SIZE);
+      logger.error(error);
+      throw new MojoExecutionException(error);
+    }
+
+    long partSize = file.length() / this.chunkCount;
+    if (partSize < MIN_FILE_SIZE) {
+      error = String.format("File part size (%s bytes) is too small for multipart uploads. " +
+          "File parts need to be greater than %s bytes. Consider using fewer chunks (chunkCount = %s)",
+          partSize, MIN_FILE_SIZE, this.chunkCount);
+      logger.error(error);
+      throw new MojoExecutionException(error);
+    }
+
   }
 
   private class UploadProgressListener implements ProgressListener {

@@ -4,7 +4,7 @@
   <groupId>io.thinkstack.maven.plugins</groupId>
   <artifactId>s3-multipart-upload-maven-plugin</artifactId>
   <packaging>maven-plugin</packaging>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>1.0.0</version>
   <name>s3-multipart-upload-maven-plugin Maven Mojo</name>
 
   <properties>
