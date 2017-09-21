@@ -96,7 +96,7 @@
             </execution>
           </executions>
           <configuration>
-            <goalPrefix>s3-multipart-upload</goalPrefix>
+            <goalPrefix>s3-utils</goalPrefix>
             <skipErrorNoDescriptorsFound>true</skipErrorNoDescriptorsFound>
           </configuration>
         </plugin>
