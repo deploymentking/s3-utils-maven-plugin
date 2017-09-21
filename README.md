@@ -18,7 +18,7 @@ Maven plugin to allow multipart uploads of large files via the low level Java SD
       <plugin>
         <groupId>io.thinkstack.maven.plugins</groupId>
         <artifactId>s3-multipart-upload-maven-plugin</artifactId>
-        <version>1.0.0</version>
+        <version>1.0.1</version>
         <configuration>
           <bucket>s3-bucket</bucket>
           <source>/tmp/test.zip</source>
@@ -32,10 +32,16 @@ Maven plugin to allow multipart uploads of large files via the low level Java SD
 ```
 ## Example Maven command
 ```bash
-mvn io.thinkstack.maven.plugins:s3-upload-maven-plugin:1.0.0:s3-multipart-upload
+mvn io.thinkstack.maven.plugins:s3-upload-maven-plugin:1.0.1:s3-multipart-upload
 ```
 
 ## Running Unit Tests
+
+### AWS Profile
+The test resources use the profile `io.thinkstack` so either change this to a value already configured or add a new AWS 
+profile.
+
+### IntelliJ Setup
 When running the unit tests in IntelliJ I have had to add the following commands _before_ the tests run.
 
 * Run | Edit Configurations...
@@ -54,6 +60,14 @@ file size limit of 100mb
 * Program = `/bin/dd`
 * Parameters = `dd if=/dev/zero of=src/test/resources/120mb.dat  bs=125829120  count=1`
 * Working directory = `~/path/to/source/DeploymentKing/s3-multipart-upload-maven-plugin`
+
+## Deployment
+This project has not been deployed to Maven Central. The project has no distribution management section so it is the 
+responsibility of anyone using this repo, to deploy it appropriately to their own repo using the following:
+
+```bash
+mvn deploy -DaltDeploymentRepository=repo-id::default::https://repo-url
+```
 
 ## References
 * [docs.aws.amazon.com: Upload a File (S3)](http://docs.aws.amazon.com/AmazonS3/latest/dev/llJavaUploadFile.html)
