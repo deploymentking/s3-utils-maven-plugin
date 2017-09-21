@@ -59,7 +59,7 @@ public class S3MultipartUpload extends AbstractMojo {
     List<MultiPartFileUploader> uploaders = new ArrayList<>();
 
     // Step 1: Initialize.
-    InitiateMultipartUploadRequest initRequest = new InitiateMultipartUploadRequest(this.bucket, file.getName());
+    InitiateMultipartUploadRequest initRequest = new InitiateMultipartUploadRequest(this.bucket, this.key);
     InitiateMultipartUploadResult initResponse = s3Client.initiateMultipartUpload(initRequest);
     long contentLength = file.length();
 
@@ -79,7 +79,7 @@ public class S3MultipartUpload extends AbstractMojo {
         UploadPartRequest uploadRequest =
             new UploadPartRequest().
                 withBucketName(this.bucket).
-                withKey(file.getName()).
+                withKey(this.key).
                 withUploadId(initResponse.getUploadId()).
                 withPartNumber(i).
                 withFileOffset(filePosition).
@@ -104,16 +104,13 @@ public class S3MultipartUpload extends AbstractMojo {
 
       // Step 3: complete.
       CompleteMultipartUploadRequest compRequest =
-          new CompleteMultipartUploadRequest(this.bucket,
-              file.getName(),
-              initResponse.getUploadId(),
-              partETags);
+          new CompleteMultipartUploadRequest(this.bucket, this.key, initResponse.getUploadId(), partETags);
 
       s3Client.completeMultipartUpload(compRequest);
 
     } catch (Throwable t) {
       logger.error("Unable to put object as multipart to Amazon S3 for file " + file.getName(), t);
-      s3Client.abortMultipartUpload(new AbortMultipartUploadRequest(this.bucket, file.getName(), initResponse.getUploadId()));
+      s3Client.abortMultipartUpload(new AbortMultipartUploadRequest(this.bucket, this.key, initResponse.getUploadId()));
 
     } finally {
       s3Client.shutdown();

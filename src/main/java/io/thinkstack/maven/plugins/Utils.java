@@ -28,7 +28,7 @@ public class Utils {
     }
 
     // Grab the credentials from the profile supplied OR the environmental variables
-    AWSCredentialsProvider credentials = "".equals(profile) ?
+    AWSCredentialsProvider credentials = profile == null || profile.isEmpty() ?
         new AWSStaticCredentialsProvider(new BasicAWSCredentials(accessKey, secretKey)) :
         new ProfileCredentialsProvider(profile);
 
