@@ -6,7 +6,7 @@ Maven plugin to allow:
 ## Goal: s3-multipart-upload
 
 ```bash
-mvn io.thinkstack.maven.plugins:s3-utils-maven-plugin:1.0.3:s3-multipart-upload
+mvn io.thinkstack.maven.plugins:s3-utils-maven-plugin:1.0.4:s3-multipart-upload
 ```
 
 ### Configuration parameters
@@ -26,7 +26,7 @@ mvn io.thinkstack.maven.plugins:s3-utils-maven-plugin:1.0.3:s3-multipart-upload
       <plugin>
         <groupId>io.thinkstack.maven.plugins</groupId>
         <artifactId>s3-utils-maven-plugin</artifactId>
-        <version>1.0.3</version>
+        <version>1.0.4</version>
         <executions>
           <execution>
             <goals>
@@ -75,7 +75,7 @@ file size limit of 100mb
 ## Goal: s3-download
 
 ```bash
-mvn io.thinkstack.maven.plugins:s3-utils-maven-plugin:1.0.3:s3-download
+mvn io.thinkstack.maven.plugins:s3-utils-maven-plugin:1.0.4:s3-download
 ```
 
 ### Configuration parameters
@@ -94,7 +94,7 @@ mvn io.thinkstack.maven.plugins:s3-utils-maven-plugin:1.0.3:s3-download
       <plugin>
         <groupId>io.thinkstack.maven.plugins</groupId>
         <artifactId>s3-utils-maven-plugin</artifactId>
-        <version>1.0.3</version>
+        <version>1.0.4</version>
         <executions>
           <execution>
             <goals>
