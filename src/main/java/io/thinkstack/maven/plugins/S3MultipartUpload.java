@@ -1,9 +1,6 @@
 package io.thinkstack.maven.plugins;
 
 import com.amazonaws.auth.AWSCredentialsProvider;
-import com.amazonaws.auth.AWSStaticCredentialsProvider;
-import com.amazonaws.auth.BasicAWSCredentials;
-import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import com.amazonaws.event.ProgressEvent;
 import com.amazonaws.event.ProgressListener;
 import com.amazonaws.services.s3.AmazonS3;
@@ -13,7 +10,6 @@ import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
-import org.codehaus.plexus.component.configurator.ComponentConfigurationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -149,7 +145,7 @@ public class S3MultipartUpload extends AbstractMojo {
     long partSize = file.length() / this.chunkCount;
     if (partSize < MIN_FILE_SIZE) {
       error = String.format("File part size (%s bytes) is too small for multipart uploads. " +
-          "File parts need to be greater than %s bytes. Consider using fewer chunks (chunkCount = %s)",
+              "File parts need to be greater than %s bytes. Consider using fewer chunks (chunkCount = %s)",
           partSize, MIN_FILE_SIZE, this.chunkCount);
       logger.error(error);
       throw new MojoExecutionException(error);

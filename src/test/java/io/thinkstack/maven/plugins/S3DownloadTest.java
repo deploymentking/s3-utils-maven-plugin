@@ -2,7 +2,6 @@ package io.thinkstack.maven.plugins;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.testing.AbstractMojoTestCase;
-import org.codehaus.plexus.component.configurator.ComponentConfigurationException;
 import org.junit.Test;
 
 import java.io.File;

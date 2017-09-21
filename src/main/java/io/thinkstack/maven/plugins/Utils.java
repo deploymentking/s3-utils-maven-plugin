@@ -13,14 +13,14 @@ public class Utils {
 
     String error;
 
-    if (profile == null || profile.isEmpty()){
-      if (accessKey == null || accessKey.isEmpty()){
+    if (profile == null || profile.isEmpty()) {
+      if (accessKey == null || accessKey.isEmpty()) {
         error = String.format("Profile has not been specified and the AWS Access Key Id is empty or null");
         logger.error(error);
         throw new MojoExecutionException(error);
       }
 
-      if (secretKey == null || secretKey.isEmpty()){
+      if (secretKey == null || secretKey.isEmpty()) {
         error = String.format("Profile has not been specified and the AWS Secret Access Key is empty or null");
         logger.error(error);
         throw new MojoExecutionException(error);
