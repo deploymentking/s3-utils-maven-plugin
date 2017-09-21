@@ -1,0 +1,28 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>io.thinkstack.maven.plugins</groupId>
+  <artifactId>s3-multipart-upload-maven-plugin-test</artifactId>
+  <version>1.0.2</version>
+  <packaging>jar</packaging>
+
+  <name>Sample Maven Plugin - Test</name>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>io.thinkstack.maven.plugins</groupId>
+        <artifactId>s3-multipart-upload-maven-plugin</artifactId>
+        <version>1.0.2</version>
+        <configuration>
+          <bucket>io.thinkstack</bucket>
+          <source>src/test/resources/4mb.dat</source>
+          <key>4mb.dat</key>
+          <profile>io.thinkstack</profile>
+          <chunkCount>20</chunkCount>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>

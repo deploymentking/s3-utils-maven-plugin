@@ -59,3 +59,4 @@ target/
 # GitHub Large File Size Restriction
 # GH001: Large files detected. You may want to try Git Large File Storage - https://git-lfs.github.com.
 120mb.dat
+*.download

@@ -13,6 +13,7 @@ import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
+import org.codehaus.plexus.component.configurator.ComponentConfigurationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,19 +24,19 @@ import java.util.List;
 @Mojo(name = "s3-multipart-upload")
 public class S3MultipartUpload extends AbstractMojo {
 
-  @Parameter(required = true)
+  @Parameter(property = "s3-multipart-upload.bucket", required = true)
   private String bucket;
 
-  @Parameter(required = true)
+  @Parameter(property = "s3-multipart-upload.source", required = true)
   private String source;
 
-  @Parameter(required = true)
+  @Parameter(property = "s3-multipart-upload.key", required = true)
   private String key;
 
-  @Parameter()
+  @Parameter(property = "s3-multipart-upload.profile")
   private String profile;
 
-  @Parameter(required = false, defaultValue = "20")
+  @Parameter(property = "s3-multipart-upload.chunkCount", required = false, defaultValue = "20")
   private int chunkCount;
 
   private static final String accessKey = System.getenv("AWS_ACCESS_KEY_ID");
@@ -49,15 +50,11 @@ public class S3MultipartUpload extends AbstractMojo {
 
   public void execute() throws MojoExecutionException {
     // Initialise variables that are used throughout the class
-    AWSCredentialsProvider credentials = this.profile == null || this.profile.isEmpty() ?
-        new AWSStaticCredentialsProvider(new BasicAWSCredentials(accessKey, secretKey)) :
-        new ProfileCredentialsProvider(this.profile);
-
+    AWSCredentialsProvider credentials = Utils.getCredentials(logger, this.profile, accessKey, secretKey);
     file = new File(this.source);
     s3Client = AmazonS3ClientBuilder.standard().withCredentials(credentials).build();
 
     checkArguments();
-
     putObjectAsMultiPart();
   }
 
@@ -157,7 +154,6 @@ public class S3MultipartUpload extends AbstractMojo {
       logger.error(error);
       throw new MojoExecutionException(error);
     }
-
   }
 
   private class UploadProgressListener implements ProgressListener {
@@ -176,31 +172,32 @@ public class S3MultipartUpload extends AbstractMojo {
     public void progressChanged(ProgressEvent progressEvent) {
       switch (progressEvent.getEventType()) {
         case TRANSFER_STARTED_EVENT:
-          logger.info(String.format("Upload started for file %s", file.getName()));
+          logger.info(String.format("Upload started for file %s",
+              file.getName()));
           break;
         case TRANSFER_COMPLETED_EVENT:
-          logger.info("Upload completed for file " + "\"" + file.getName() + "\"" +
-              ", " + file.length() + " bytes data has been transferred");
+          logger.info(String.format("Upload completed for file '%s', %s bytes have been transferred.",
+              file.getName(), file.length()));
           break;
         case TRANSFER_FAILED_EVENT:
-          logger.info("Upload failed for file " + "\"" + file.getName() + "\"" +
-              ", " + progressEvent.getBytesTransferred() + " bytes data has been transferred");
+          logger.info(String.format("Upload failed for file '%s', %s bytes have been transferred.",
+              file.getName(), progressEvent.getBytesTransferred()));
           break;
         case TRANSFER_CANCELED_EVENT:
-          logger.info("Upload cancelled for file " + "\"" + file.getName() + "\"" +
-              ", " + progressEvent.getBytesTransferred() + " bytes data has been transferred");
+          logger.info(String.format("Upload cancelled for file '%s', %s bytes have been transferred.",
+              file.getName(), progressEvent.getBytesTransferred()));
           break;
         case TRANSFER_PART_STARTED_EVENT:
-          logger.info("Upload started at " + partNo + ". part for file " + "\"" + file.getName() + "\"");
+          logger.info(String.format("Upload started for part %s of file '%s'",
+              partNo, file.getName()));
           break;
         case TRANSFER_PART_COMPLETED_EVENT:
-          logger.info("Upload completed at " + partNo + ". part for file " + "\"" + file.getName() + "\"" +
-              ", " + (partLength > 0 ? partLength : progressEvent.getBytesTransferred()) +
-              " bytes data has been transferred");
+          logger.info(String.format("Upload completed for part %s of file '%s', %s bytes transferred.",
+              partNo, file.getName(), (partLength > 0 ? partLength : progressEvent.getBytesTransferred())));
           break;
         case TRANSFER_PART_FAILED_EVENT:
-          logger.info("Upload failed at " + partNo + ". part for file " + "\"" + file.getName() + "\"" +
-              ", " + progressEvent.getBytesTransferred() + " bytes data has been transferred");
+          logger.info(String.format("Upload failed for part %s of file '%s', %s bytes have been transferred.",
+              partNo, file.getName(), progressEvent.getBytesTransferred()));
           break;
       }
     }

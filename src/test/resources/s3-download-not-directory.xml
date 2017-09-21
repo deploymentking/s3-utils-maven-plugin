@@ -4,23 +4,22 @@
 
   <groupId>io.thinkstack.maven.plugins</groupId>
   <artifactId>s3-multipart-upload-maven-plugin-test</artifactId>
-  <version>1.0.1</version>
+  <version>1.0.2</version>
   <packaging>jar</packaging>
 
-  <name>Sample Maven Plugin - Test</name>
+  <name>Sample Maven Plugin - Test Download Location Not A Directory</name>
 
   <build>
     <plugins>
       <plugin>
         <groupId>io.thinkstack.maven.plugins</groupId>
         <artifactId>s3-multipart-upload-maven-plugin</artifactId>
-        <version>1.0.1</version>
+        <version>1.0.2</version>
         <configuration>
           <bucket>io.thinkstack</bucket>
-          <source>src/test/resources/20mb.dat</source>
-          <key>20mb.dat</key>
+          <key>120mb.dat</key>
           <profile>io.thinkstack</profile>
-          <chunkCount>20</chunkCount>
+          <folder>src/test/resources/4mb.dat</folder>
         </configuration>
       </plugin>
     </plugins>

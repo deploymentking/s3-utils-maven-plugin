@@ -18,7 +18,7 @@ Maven plugin to allow multipart uploads of large files via the low level Java SD
       <plugin>
         <groupId>io.thinkstack.maven.plugins</groupId>
         <artifactId>s3-multipart-upload-maven-plugin</artifactId>
-        <version>1.0.1</version>
+        <version>1.0.2</version>
         <configuration>
           <bucket>s3-bucket</bucket>
           <source>/tmp/test.zip</source>
@@ -32,7 +32,7 @@ Maven plugin to allow multipart uploads of large files via the low level Java SD
 ```
 ## Example Maven command
 ```bash
-mvn io.thinkstack.maven.plugins:s3-upload-maven-plugin:1.0.1:s3-multipart-upload
+mvn io.thinkstack.maven.plugins:s3-upload-maven-plugin:1.0.2:s3-multipart-upload
 ```
 
 ## Running Unit Tests
