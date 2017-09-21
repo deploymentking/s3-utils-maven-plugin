@@ -83,7 +83,7 @@ mvn io.thinkstack.maven.plugins:s3-utils-maven-plugin:1.0.3:s3-download
 | Parameter | Description | Required | Default |
 |-----------|-------------|----------|---------|
 |bucket|The name of the bucket. |*yes*| |
-|key|The destination key in s3. | *yes*| |
+|key|The source key in s3. | *yes*| |
 |profile|AWS Profile | *no* | if unspecified, the plugin falls back to environment variables. |
 |folder|The path to the folder into which the object will be downloaded. |*yes*| |
 
@@ -98,7 +98,7 @@ mvn io.thinkstack.maven.plugins:s3-utils-maven-plugin:1.0.3:s3-download
         <executions>
           <execution>
             <goals>
-              <goal>s3-multipart-upload</goal>
+              <goal>s3-download</goal>
             </goals>
           </execution>
         </executions>
