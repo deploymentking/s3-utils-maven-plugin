@@ -20,20 +20,21 @@ import java.nio.file.StandardCopyOption;
 @Mojo(name = "s3-download")
 public class S3Download extends AbstractMojo {
 
-  @Parameter(property = "s3-download.bucket", required = true)
+  @Parameter(property = "s3utils.bucket", required = true)
   private String bucket;
 
-  @Parameter(property = "s3-download.key", required = true)
+  @Parameter(property = "s3utils.key", required = true)
   private String key;
 
-  @Parameter(property = "s3-download.profile")
+  @Parameter(property = "s3utils.profile")
   private String profile;
 
-  @Parameter(property = "s3-download.folder", required = true)
+  @Parameter(property = "s3utils.folder", required = true)
   private String folder;
 
   private static final String accessKey = System.getenv("AWS_ACCESS_KEY_ID");
   private static final String secretKey = System.getenv("AWS_SECRET_ACCESS_KEY");
+  private static final String profileEnv = System.getenv("AWS_PROFILE");
 
   private static final Logger logger = LoggerFactory.getLogger(S3Download.class);
 

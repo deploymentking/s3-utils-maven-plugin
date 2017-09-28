@@ -20,19 +20,19 @@ import java.util.List;
 @Mojo(name = "s3-multipart-upload")
 public class S3MultipartUpload extends AbstractMojo {
 
-  @Parameter(property = "s3-multipart-upload.bucket", required = true)
+  @Parameter(property = "s3utils.bucket", required = true)
   private String bucket;
 
-  @Parameter(property = "s3-multipart-upload.source", required = true)
+  @Parameter(property = "s3utils.source", required = true)
   private String source;
 
-  @Parameter(property = "s3-multipart-upload.key", required = true)
+  @Parameter(property = "s3utils.key", required = true)
   private String key;
 
-  @Parameter(property = "s3-multipart-upload.profile")
+  @Parameter(property = "s3utils.profile")
   private String profile;
 
-  @Parameter(property = "s3-multipart-upload.chunkCount", required = false, defaultValue = "20")
+  @Parameter(property = "s3utils.chunkCount", required = false, defaultValue = "20")
   private int chunkCount;
 
   private static final String accessKey = System.getenv("AWS_ACCESS_KEY_ID");

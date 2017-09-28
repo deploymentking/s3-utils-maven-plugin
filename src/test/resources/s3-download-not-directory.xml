@@ -4,7 +4,7 @@
 
   <groupId>io.thinkstack.maven.plugins</groupId>
   <artifactId>s3-utils-maven-plugin-test</artifactId>
-  <version>1.0.4</version>
+  <version>1.0.5</version>
   <packaging>jar</packaging>
 
   <name>Sample Maven Plugin - Test Download Location Not A Directory</name>
@@ -14,7 +14,7 @@
       <plugin>
         <groupId>io.thinkstack.maven.plugins</groupId>
         <artifactId>s3-utils-maven-plugin</artifactId>
-        <version>1.0.4</version>
+        <version>1.0.5</version>
         <configuration>
           <bucket>io.thinkstack</bucket>
           <key>120mb.dat</key>
