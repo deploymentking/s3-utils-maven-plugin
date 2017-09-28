@@ -1,4 +1,27 @@
 # s3-utils-maven-plugin
+
+## Table of contents
+
+<!-- toc -->
+
+- [Goal: s3-multipart-upload](#goal-s3-multipart-upload)
+  * [Configuration properties](#configuration-properties)
+    + [AWS Environment Variables](#aws-environment-variables)
+  * [Example plugin definition](#example-plugin-definition)
+  * [Running Unit Tests](#running-unit-tests)
+    + [AWS Profile](#aws-profile)
+    + [IntelliJ Setup](#intellij-setup)
+      - [Run Maven Goal](#run-maven-goal)
+      - [Run External Tool](#run-external-tool)
+- [Goal: s3-download](#goal-s3-download)
+  * [Configuration properties](#configuration-properties-1)
+    + [AWS Environment Variables](#aws-environment-variables-1)
+  * [Example plugin definition](#example-plugin-definition-1)
+- [Deployment](#deployment)
+- [References](#references)
+
+<!-- tocstop -->
+
 Maven plugin to allow:
 * multipart uploads of large files via the low level Java SDK.
 * downloading a single object into a folder.
@@ -6,18 +29,23 @@ Maven plugin to allow:
 ## Goal: s3-multipart-upload
 
 ```bash
-mvn io.thinkstack.maven.plugins:s3-utils-maven-plugin:1.0.5:s3-multipart-upload
+mvn io.thinkstack.maven.plugins:s3-utils-maven-plugin:1.0.6:s3-multipart-upload
 ```
 
-### Configuration parameters
+### Configuration properties
 
-| Parameter | Description | Required | Default |
+| Property | Description | Required | Default |
 |-----------|-------------|----------|---------|
-|bucket|The name of the bucket. |*yes*| |
-|source|The source file. |*yes*| |
-|key|The destination key in s3. | *yes*| |
-|profile|AWS Profile | *no* | if unspecified, the plugin falls back to environment variables. |
-|chunkSize|The number of chunks into which to split the source | *no* | 20 |
+|s3utils.bucket|The name of the bucket. |*yes*| |
+|s3utils.source|The source file. |*yes*| |
+|s3utils.key|The destination key in s3. | *yes*| |
+|s3utils.profile|AWS Profile to use | *no* | if unspecified, the plugin falls back to environment variables. |
+|s3utils.chunkSize|The number of chunks into which to split the source | *no* | 20 |
+
+#### AWS Environment Variables
+If the profile is not specified via the property e.g. `-Ds3utils.profile=example-profile-name` then the plugin will look
+for the profile in `$AWS_PROFILE` environment variable. If this is null or empty, the plugin will attempt to load the AWS
+keys `$AWS_ACCESS_KEY_ID` and `$AWS_SECRET_KEY_ID`
 
 ### Example plugin definition
 ```xml
@@ -26,7 +54,7 @@ mvn io.thinkstack.maven.plugins:s3-utils-maven-plugin:1.0.5:s3-multipart-upload
       <plugin>
         <groupId>io.thinkstack.maven.plugins</groupId>
         <artifactId>s3-utils-maven-plugin</artifactId>
-        <version>1.0.5</version>
+        <version>1.0.6</version>
         <executions>
           <execution>
             <goals>
@@ -75,17 +103,22 @@ file size limit of 100mb
 ## Goal: s3-download
 
 ```bash
-mvn io.thinkstack.maven.plugins:s3-utils-maven-plugin:1.0.5:s3-download
+mvn io.thinkstack.maven.plugins:s3-utils-maven-plugin:1.0.6:s3-download
 ```
 
-### Configuration parameters
+### Configuration properties
 
-| Parameter | Description | Required | Default |
+| Property | Description | Required | Default |
 |-----------|-------------|----------|---------|
-|bucket|The name of the bucket. |*yes*| |
-|key|The source key in s3. | *yes*| |
-|profile|AWS Profile | *no* | if unspecified, the plugin falls back to environment variables. |
-|folder|The path to the folder into which the object will be downloaded. |*yes*| |
+|s3utils.bucket|The name of the bucket. |*yes*| |
+|s3utils.key|The source key in s3. | *yes*| |
+|s3utils.profile|AWS Profile | *no* | if unspecified, the plugin falls back to environment variables. |
+|s3utils.folder|The path to the folder into which the object will be downloaded. |*yes*| |
+
+#### AWS Environment Variables
+If the profile is not specified via the property e.g. `-Ds3utils.profile=example-profile-name` then the plugin will look
+for the profile in `$AWS_PROFILE` environment variable. If this is null or empty, the plugin will attempt to load the AWS
+keys `$AWS_ACCESS_KEY_ID` and `$AWS_SECRET_KEY_ID`
 
 ### Example plugin definition
 ```xml
@@ -94,7 +127,7 @@ mvn io.thinkstack.maven.plugins:s3-utils-maven-plugin:1.0.5:s3-download
       <plugin>
         <groupId>io.thinkstack.maven.plugins</groupId>
         <artifactId>s3-utils-maven-plugin</artifactId>
-        <version>1.0.5</version>
+        <version>1.0.6</version>
         <executions>
           <execution>
             <goals>

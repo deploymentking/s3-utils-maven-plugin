@@ -32,10 +32,6 @@ public class S3Download extends AbstractMojo {
   @Parameter(property = "s3utils.folder", required = true)
   private String folder;
 
-  private static final String accessKey = System.getenv("AWS_ACCESS_KEY_ID");
-  private static final String secretKey = System.getenv("AWS_SECRET_ACCESS_KEY");
-  private static final String profileEnv = System.getenv("AWS_PROFILE");
-
   private static final Logger logger = LoggerFactory.getLogger(S3Download.class);
 
   private static AmazonS3 s3Client;
@@ -43,7 +39,7 @@ public class S3Download extends AbstractMojo {
 
   public void execute() throws MojoExecutionException {
     // Initialise variables that are used throughout the class
-    AWSCredentialsProvider credentials = Utils.getCredentials(logger, this.profile, accessKey, secretKey);
+    AWSCredentialsProvider credentials = Utils.getCredentials(logger, this.profile);
     downloadFolder = new File(this.folder);
     s3Client = AmazonS3ClientBuilder.standard().withCredentials(credentials).build();
 
@@ -76,12 +72,11 @@ public class S3Download extends AbstractMojo {
   private void checkArguments() throws MojoExecutionException {
     String error;
 
-    logger.info(String.format("Using the following arguments: bucket = %s, key = %s, folder = %s, profile = %s, accessKey = %s, secretKey = ***",
+    logger.info(String.format("Using the following arguments: bucket = %s, key = %s, folder = %s, profile = %s",
         this.bucket,
         this.key,
         this.folder,
-        this.profile,
-        accessKey));
+        this.profile));
 
     if (!s3Client.doesBucketExist(this.bucket)) {
       error = String.format("Bucket not found: %s", this.bucket);

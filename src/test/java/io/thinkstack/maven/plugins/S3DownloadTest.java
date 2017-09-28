@@ -26,7 +26,7 @@ public class S3DownloadTest extends AbstractMojoTestCase {
     try {
       getSomeMojo("src/test/resources/s3-download-no-profile.xml");
     } catch (MojoExecutionException exception) {
-      assertTrue(exception.getMessage().contains("Profile has not been specified and the AWS Access Key Id is empty or null"));
+      assertTrue(exception.getMessage().contains("Profile has not been specified and $AWS_ACCESS_KEY_ID is empty or null"));
       return;
     }
     fail("Should have thrown MojoExecutionException");

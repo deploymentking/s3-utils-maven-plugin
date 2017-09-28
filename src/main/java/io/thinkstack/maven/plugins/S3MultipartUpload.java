@@ -35,9 +35,6 @@ public class S3MultipartUpload extends AbstractMojo {
   @Parameter(property = "s3utils.chunkCount", required = false, defaultValue = "20")
   private int chunkCount;
 
-  private static final String accessKey = System.getenv("AWS_ACCESS_KEY_ID");
-  private static final String secretKey = System.getenv("AWS_SECRET_ACCESS_KEY");
-
   private static final Logger logger = LoggerFactory.getLogger(S3MultipartUpload.class);
   private static final long MIN_FILE_SIZE = 5242880;
 
@@ -46,7 +43,7 @@ public class S3MultipartUpload extends AbstractMojo {
 
   public void execute() throws MojoExecutionException {
     // Initialise variables that are used throughout the class
-    AWSCredentialsProvider credentials = Utils.getCredentials(logger, this.profile, accessKey, secretKey);
+    AWSCredentialsProvider credentials = Utils.getCredentials(logger, this.profile);
     file = new File(this.source);
     s3Client = AmazonS3ClientBuilder.standard().withCredentials(credentials).build();
 
@@ -120,12 +117,11 @@ public class S3MultipartUpload extends AbstractMojo {
   private void checkArguments() throws MojoExecutionException {
     String error;
 
-    logger.info(String.format("Using the following arguments: bucket = %s, source = %s, key = %s, profile = %s, accessKey = %s, secretKey = ***",
+    logger.info(String.format("Using the following arguments: bucket = %s, source = %s, key = %s, profile = %s",
         this.bucket,
         this.source,
         this.key,
-        this.profile,
-        this.accessKey));
+        this.profile));
 
     if (!file.exists()) {
       error = String.format("File not found: %s", file.getAbsolutePath());
